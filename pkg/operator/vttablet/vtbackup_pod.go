@@ -18,6 +18,7 @@ package vttablet
 
 import (
 	"strconv"
+	"strings"
 	"time"
 
 	corev1 "k8s.io/api/core/v1"
@@ -86,7 +87,7 @@ func BackupPodName(clusterName, keyspaceName string, keyRange planetscalev2.Vite
 
 // InitialBackupPodName returns the name of the Pod for an initial vtbackup job.
 func InitialBackupPodName(clusterName, keyspaceName string, keyRange planetscalev2.VitessKeyRange) string {
-	return names.Join(clusterName, keyspaceName, keyRange.SafeName(), planetscalev2.VtbackupComponentName, "init")
+	return names.Join(clusterName, strings.ReplaceAll(keyspaceName, "_", "-"), keyRange.SafeName(), planetscalev2.VtbackupComponentName, "init")
 }
 
 // NewBackupPod creates a new vtbackup Pod, which is like a special kind of
