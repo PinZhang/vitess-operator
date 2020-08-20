@@ -19,6 +19,7 @@ package subcontroller
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"planetscale.dev/vitess-operator/pkg/operator/reconciler"
@@ -118,7 +119,7 @@ func (r *ReconcileVitessBackupStorage) reconcileBackups(ctx context.Context, vbs
 
 			key := client.ObjectKey{
 				Namespace: vbs.Namespace,
-				Name:      vitessbackup.ObjectName(clusterName, backupLocationName, keyspaceName, shard.Spec.KeyRange, backupTime, tabletAlias),
+				Name:      vitessbackup.ObjectName(clusterName, backupLocationName, strings.ReplaceAll(keyspaceName, "_", "-"), shard.Spec.KeyRange, backupTime, tabletAlias),
 			}
 			keys = append(keys, key)
 			backupHandles[key] = backup
